@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessible Interactive Photo Gallery</title>
+  <style>
+    /* Set the background color for the entire page */
+    body {
+      background-color: gray;
+    }
+    /* Display area styling with alt text color set to white */
+    #image {
+      width: 600px;
+      height: 400px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      color: white; /* Alt text color set to white */
+      text-align: center;
+      padding: 10px;
+    }
+    /* Gallery container styling */
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* Figure styling */
+    .gallery figure {
+      margin: 10px;
+      cursor: pointer;
+      outline: none; /* Remove default focus outline if desired */
+    }
+    /* Thumbnail image styling */
+    .gallery img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+      display: block;
+    }
+    /* Optional: Styling for figcaptions */
+    .gallery figcaption {
+      text-align: center;
+      margin-top: 5px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body onload="initializeGallery()">
+  <!-- Display area that updates on events -->
+  <div id="image">
+    Hover over an image or focus on a thumbnail to display here.
+  </div>
+
+  <!-- Gallery of images -->
+  <div class="gallery">
+    <figure>
+      <img src="Vehicles.jpg" alt="An image of a vehicle" />
+      <figcaption>Vehicle</figcaption>
+    </figure>
+    <figure>
+      <img src="Clothings.jpg" alt="An image of an aesthetic closet" />
+      <figcaption>Clothing</figcaption>
+    </figure>
+    <figure>
+      <img src="Place.jpg" alt="A place of dreams" />
+      <figcaption>Place</figcaption>
+    </figure>
+    <figure>
+      <img src="Food.jpg" alt="An image of delicious food" />
+      <figcaption>Food</figcaption>
+    </figure>
+    <figure>
+      <img src="Culture.jpg" alt="An image of a culture/traditions" />
+      <figcaption>Culture</figcaption>
+    </figure>
+    <figure>
+      <img src="Technology.jpg" alt="A cool technology room" />
+      <figcaption>Technology</figcaption>
+    </figure>
+  </div>
+
+  <script>
+    // Function to update the display area when a thumbnail is hovered over or focused
+    function upDate(element) {
+      console.log("upDate triggered");
+      var displayDiv = document.getElementById("image");
+      // Get the alt text and image source from the nested img element
+      var img = element.querySelector("img");
+      var altText = img.alt;
+      var imgSrc = img.src;
+      displayDiv.innerHTML = altText;
+      displayDiv.style.backgroundImage = "url('" + imgSrc + "')";
+    }
+
+    // Function to reset the display area when the mouse leaves or the element loses focus
+    function undo() {
+      console.log("undo triggered");
+      var displayDiv = document.getElementById("image");
+      displayDiv.innerHTML = "Hover over an image or focus on a thumbnail to display here.";
+      displayDiv.style.backgroundImage = "none";
+    }
+
+    // Initialization function to add tabindex and event listeners to each figure
+    function initializeGallery() {
+      console.log("Gallery initialization triggered");
+      var figures = document.querySelectorAll(".gallery figure");
+      // Loop through each figure element
+      for (var i = 0; i < figures.length; i++) {
+        // Add tabindex attribute to make it focusable
+        figures[i].setAttribute("tabindex", "0");
+        // Add mouse events
+        figures[i].addEventListener("mouseover", function() {
+          upDate(this);
+        });
+        figures[i].addEventListener("mouseleave", function() {
+          undo();
+        });
+        // Add keyboard focus events
+        figures[i].addEventListener("focus", function() {
+          upDate(this);
+        });
+        figures[i].addEventListener("blur", function() {
+          undo();
+        });
+      }
+    }
+  </script>
+</body>
+</html>
